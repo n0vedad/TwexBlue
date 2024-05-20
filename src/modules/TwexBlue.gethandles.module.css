@@ -1,0 +1,56 @@
+/* TwexBlue.gethandles.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; 
+  text-align: center;
+}
+
+.instructions {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.terminalContainer {
+  display: flex;
+  justify-content: center; 
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fileInputLabel {
+  position: relative;
+}
+
+.hiddenFileInput {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.fileInputLabel {
+  position: relative;
+  margin-top: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: white;
+  background-color: blue;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.fileInputLabel:hover {
+  background-color: darkblue;
+}

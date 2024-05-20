@@ -1,0 +1,55 @@
+/* TwexBlue.landingpage.module.css */
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  overflow-x: hidden;
+  padding-bottom: 20px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 1rem; 
+}
+
+.logo {
+  width: 50%;
+  max-width: 200px; 
+  min-width: 100px; 
+  height: auto; 
+}
+
+.logoText {
+  font-size: 70px;
+  color: #f7f7f7;
+  font-family: Arial Black, Gadget, sans-serif;
+  text-shadow: 0px 0px 0 rgb(222,222,222),1px 1px 0 rgb(196,196,196),2px 2px 0 rgb(171,171,171),3px 3px 0 rgb(145,145,145),4px 4px 0 rgb(120,120,120),5px 5px 0 rgb(94,94,94),6px 6px 0 rgb(69,69,69),7px 7px 0 rgb(43,43,43),8px 8px 0 rgb(18,18,18),9px 9px 0 rgb(-8,-8,0),10px 10px  0 rgb(-33,-33,0),11px 11px 10px rgba(17,0,255,0.6),11px 11px 1px rgba(17,0,255,0.5),0px 0px 10px rgba(17,0,255,.2);
+}
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: 100%;
+}
+
+.faq {
+  margin: 0 auto;
+  text-align: center; 
+}
+
+/* Media Query für kleinere Bildschirme */
+@media (max-width: 600px) {
+  .landing-page {
+    margin-bottom: 100px;
+  }
+
+  .button {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
