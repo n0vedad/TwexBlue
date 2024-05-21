@@ -12,14 +12,14 @@ This is a proof-of-concept (PoC) to export your blocklist from a data archive fr
 - npm (v6.x or later)
 - vite (v5.0.x or later)
 - A [Redis](https://redis.io/) server for token management
-- Access to the X (formerly known as Twitte) API
+- Access to the X (formerly known as Twitter) API
 
 ### Installation
 
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/n0vedad/twexblue.git
+   git clone https://github.com/n0vedad/TwexBlue.git
    cd twexblue
    ```
 
