@@ -11,8 +11,8 @@ This is a proof-of-concept (PoC) to export your blocklist from a data archive fr
 - Node.js (v14.x or later)
 - npm (v6.x or later)
 - vite (v5.0.x or later)
-- A [Redis](https://redis.io/) server for token management
-- Access to the X (formerly known as Twitter) API
+- A [Redis](https://redis.io/) server for token management (usually running at `redis://localhost:6379`)
+- Access to the X (formerly known as Twitter) API (I did NOT use the official API here)
 
 ### Installation
 
