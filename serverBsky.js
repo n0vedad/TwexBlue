@@ -43,7 +43,7 @@ const redisClient = createClient({ url: 'redis://localhost:6379' });
 redisClient.connect().catch(logMessage);
 app.use(session({
     store: new RedisStore({ client: redisClient }),
-    secret: 'M31nS3ss10nG3h31mn1s',
+    secret: process.env.REDIS_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -173,7 +173,7 @@ app.get('/check-login', checkRedisStatus, validateSession, async (req, res) => {
 // login route
 app.post('/login', async (req, res) => {
     const { handle, appPassword } = req.body;
-    if (!isValidAppPassword(appPassword)) return res.status(400).send('Ungültiges App-Passwort.');
+    if (!isValidAppPassword(appPassword)) return res.status(400).send('Invalid app password.');
 
     try {
         await agent.login({ identifier: `${handle}`, password: appPassword });
@@ -182,10 +182,10 @@ app.post('/login', async (req, res) => {
         req.session.accessToken = accessToken;
         req.session.refreshToken = refreshToken;
         req.session.userCreated = true;
-        res.status(200).json({ message: `Login erfolgreich für: ${handle}`, accessToken });
+        res.status(200).json({ message: `Login successful for: ${handle}`, accessToken });
     } catch (error) {
-        logMessage('Login fehlgeschlagen:', error);
-        res.status(401).send('Login fehlgeschlagen.');
+        logMessage('Login failed:', error);
+        res.status(401).send('Login failed.');
     }
 });
 
@@ -203,10 +203,10 @@ app.post('/search', validateSession, async (req, res) => {
                 return null;
             }
         }));
-        res.json({ message: `Suchanfrage für ${handleCount} Handles blockierter Accounts von Twitter wird auf Bluesky durchgeführt...`, results: results.filter(handle => handle !== null) });
+        res.json({ message: `Search request for ${handleCount} blocked Twitter account handles on Bluesky...`, results: results.filter(handle => handle !== null) });
     } catch (error) {
-        logMessage('Fehler bei der Suchanfrage:', error.message);
-        res.status(500).send('Interner Serverfehler');
+        logMessage('Error during search request:', error.message);
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -219,8 +219,8 @@ app.post('/get-my-blocks', validateSession, async (req, res) => {
         const nextCursor = response.data.cursor;
         res.json({ blocks: myBlocks, cursor: nextCursor });
     } catch (error) {
-        logMessage('Fehler beim Abrufen blockierter Accounts:', error);
-        res.status(500).send('Interner Serverfehler');
+        logMessage('Error retrieving blocked accounts:', error);
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -228,23 +228,23 @@ app.post('/get-my-blocks', validateSession, async (req, res) => {
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            logMessage('Fehler beim Logout:', err);
-            return res.status(500).send('Logout fehlgeschlagen.');
+            logMessage('Logout failed:', err);
+            return res.status(500).send('Logout failed.');
         }
 
         res.clearCookie('connect.sid');
         res.clearCookie('serverHash');
-        res.status(200).send('Logout erfolgreich.');
+        res.status(200).send('Logout successful.');
     });
 });
 
 // error handling
 app.use((err, _, res) => {
-    logMessage('Serverfehler', err);
-    res.status(500).send('Ein interner Serverfehler ist aufgetreten');
+    logMessage('Server error', err);
+    res.status(500).send('An internal server error occurred');
 });
 
 // run
 app.listen(3001, () => {
-    logMessage('Bluesky Port 3001');
+    logMessage('Bluesky on port 3001');
 });

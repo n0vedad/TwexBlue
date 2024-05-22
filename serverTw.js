@@ -38,7 +38,7 @@ const fileFilter = (_, file, cb) => {
   if (fileExtension === '.zip' || fileExtension === '.js') {
     cb(null, true);
   } else {
-    cb(new Error('Ungültige Dateiendung beim Upload. Nur .zip und .js Dateien sind erlaubt.'), false);
+    cb(new Error('Invalid file extension. Only .zip and .js files are allowed.'), false);
   }
 };
 const storage = multer.diskStorage({
@@ -55,18 +55,18 @@ const upload = multer({ storage: storage, fileFilter: fileFilter });
 const extractUserIds = async (filePath) => {
   try {
     let data;
-    logMessage(`Verarbeitete Datei: ${filePath}`);
+    logMessage(`Processed file: ${filePath}`);
 
     if (filePath.endsWith('.zip')) {
-      logMessage('Verarbeite als ZIP-Datei');
+      logMessage('Processing as ZIP file');
       const zip = new StreamZip.async({ file: filePath });
       data = await zip.entryData('data/block.js').catch(() => {
-        throw new Error('block.js wurde im ZIP-Archiv nicht gefunden.');
+        throw new Error('block.js not found in the ZIP archive.');
       });
       await zip.close();
 
     } else if (filePath.endsWith('.js')) {
-      logMessage('Verarbeite als JS-Datei');
+      logMessage('Processing as JS file');
       data = await fsPromises.readFile(filePath, 'utf8');
     }
 
@@ -77,13 +77,13 @@ const extractUserIds = async (filePath) => {
     vm.runInContext(data.toString(), context);
 
     if (!context.window.YTD.block || !context.window.YTD.block.part0) {
-      throw new Error('Die Struktur der block.js Datei ist ungültig oder die Datei ist leer.');
+      throw new Error('The structure of the block.js file is invalid or the file is empty.');
     }
 
     const userIds = context.window.YTD.block.part0.map(entry => entry.blocking.accountId);
     return userIds;
   } catch (err) {
-    logMessage('Fehler bei der Dateiverarbeitung:', err);
+    logMessage('Error processing file:', err);
     throw err
   }
 }
@@ -113,7 +113,7 @@ const fetchUserDetails = async (idsForLookup) => {
       }
     }
   } catch (error) {
-    logMessage("Fehler beim Abrufen der Benutzerdetails: ", error);
+    logMessage("Error fetching user details: ", error);
   }
 
   return allUserDetails;
@@ -162,15 +162,14 @@ const main = async () => {
 
   // error handling
   app.use((err, _, res) => {
-    logMessage('Serverfehler', err);
-    res.status(500).send('Ein interner Serverfehler ist aufgetreten');
+    logMessage('Server error', err);
+    res.status(500).send('An internal server error occurred');
   });
 
   // run
   app.listen(3000, () => {
-    logMessage('Twitter Port 3000');
+    logMessage('Twitter on port 3000');
   });
 }
 
-main().catch(error => logMessage('Fehler beim Starten des Servers', error));
-
+main().catch(error => logMessage('Error starting the server', error));
