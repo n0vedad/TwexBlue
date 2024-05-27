@@ -57,7 +57,7 @@ To build and run the application in production mode:
    npm run preview
    ```
 
- You can serve this app with Node.js or e.g. the [Vercel Platform](https://vercel.app).
+ You can serve this app with Node.js or e.g. the [Vercel Platform](https://vercel.app). If you run it on your own server it's recommended to do this behind a reverse proxy (like nginx) to ensure HTTPS.
 
 ## Project structure
 
