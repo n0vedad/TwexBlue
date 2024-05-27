@@ -48,7 +48,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 24 * 60 * 60 * 1000,
         sameSite: 'none'
     }
@@ -140,16 +140,6 @@ const generateTokens = (handle) => {
 
 // check-login-route
 app.get('/check-login', checkRedisStatus, validateSession, async (req, res) => {
-    // check for server restart
-    const clientHash = req.cookies.serverHash;
-    if (clientHash && clientHash !== serverHash) {
-        return res.status(200).json({
-            loggedIn: false,
-            serverRestarted: true,
-            dataStore: dataStore
-        });
-    }
-
     // check for tokens
     if (req.user) {
         if (res.locals.tokenExpired) {
